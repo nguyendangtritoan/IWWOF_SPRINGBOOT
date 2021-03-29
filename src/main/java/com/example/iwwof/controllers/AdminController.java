@@ -30,4 +30,18 @@ public class AdminController {
     public String deleteUser(@RequestBody Long id){
         return adminService.deleteUser(id);
     }
+
+    @GetMapping
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public List<User> getPendingToAcceptUsers(){
+        return adminService.getPendingToAcceptUsers();
+    }
+
+    @PutMapping
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public User updateUser(@RequestBody User user){
+        return adminService.updateUser(user);
+    }
+
+
 }

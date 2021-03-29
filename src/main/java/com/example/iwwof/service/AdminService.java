@@ -6,6 +6,9 @@ import com.example.iwwof.repository.RoleRepository;
 import com.example.iwwof.repository.UserRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.Optional;
+
 @Service
 public class AdminService {
 
@@ -37,5 +40,25 @@ public class AdminService {
         }
         userRepository.deleteById(id);
         return "success";
+    }
+
+    public User updateUser(User userUpdated){
+        User user = userRepository.findById(userUpdated.getId()).orElse(null);
+        if(user == null){
+            return null;
+        }
+        user.setEmail(userUpdated.getEmail());
+        user.setLocation(userUpdated.getLocation());
+        user.setName(userUpdated.getName());
+        user.setOtherContactInfo(userUpdated.getOtherContactInfo());
+        user.setPhoneNumber(userUpdated.getPhoneNumber());
+        user.setWebsite(userUpdated.getWebsite());
+
+        return userRepository.save(user);
+
+    }
+
+    public List<User> getPendingToAcceptUsers(){
+        return userRepository.findByAccess();
     }
 }
