@@ -21,8 +21,8 @@ public class AdminController {
 
     @PostMapping
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    public String letUserRegister(@RequestBody Long id){
-        return adminService.letUserRegister(id);
+    public String letUserRegister(@RequestBody User user){
+        return adminService.letUserRegister(user.getId());
     }
 
     @DeleteMapping
