@@ -20,25 +20,25 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-    @PostMapping
+    @PostMapping("/approve/user")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public String letUserRegister(@RequestBody User user){
         return adminService.letUserRegister(user.getId());
     }
 
-    @DeleteMapping
+    @DeleteMapping("/delete/user")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public String deleteUser(@RequestBody User user){
         return adminService.deleteUser(user.getId());
     }
 
-    @GetMapping
+    @GetMapping("/get/pending")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public List<User> getPendingToAcceptUsers(){
         return adminService.getPendingToAcceptUsers();
     }
 
-    @PutMapping
+    @PutMapping("/update/user")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public User updateUser(@RequestBody User user){
         return adminService.updateUser(user);
