@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin("*")
 @RestController
 @RequestMapping("/api/business")
 public class BusinessController {
@@ -45,8 +45,8 @@ public class BusinessController {
 
     @DeleteMapping("/delete/{id}")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    public String removeBusiness(@PathVariable Long id){
-        return businessService.deleteBusinessById(id);
+    public String removeBusiness(@RequestBody Business business){
+        return businessService.deleteBusinessById(business.getId());
     }
 
     @PutMapping("/update")

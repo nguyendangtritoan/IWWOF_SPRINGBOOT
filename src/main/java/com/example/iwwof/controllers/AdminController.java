@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "*", maxAge = 3600)
+
 @RestController
 @RequestMapping("/api/admin")
+@CrossOrigin("*")
 public class AdminController {
 
     private final AdminService adminService;
@@ -27,8 +28,8 @@ public class AdminController {
 
     @DeleteMapping
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    public String deleteUser(@RequestBody Long id){
-        return adminService.deleteUser(id);
+    public String deleteUser(@RequestBody User user){
+        return adminService.deleteUser(user.getId());
     }
 
     @GetMapping
