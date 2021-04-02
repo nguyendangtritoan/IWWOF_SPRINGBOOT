@@ -34,10 +34,16 @@ public class AdminController {
         return adminService.deleteUser(user.getId());
     }
 
-    @GetMapping("/get/pending")
+    @GetMapping("/get/pending/user")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public List<User> getPendingToAcceptUsers(){
         return adminService.getPendingToAcceptUsers();
+    }
+
+    @GetMapping("/get/all/user")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    public List<User> getAllUsers(){
+        return adminService.getAllUsers();
     }
 
     @PutMapping("/update/user")

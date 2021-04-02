@@ -64,4 +64,8 @@ public class AdminService {
     public List<User> getPendingToAcceptUsers(){
         return userRepository.findByAccess();
     }
+
+    public List<User> getAllUsers(){
+        return userRepository.findAll();
+    }
 }
