@@ -23,6 +23,9 @@ public class AdminService {
     }
 
     public String letUserRegister(Long id){
+        if(id == null){
+            return "id is null";
+        }
         User user = userRepository.findById(id).orElse(null);
         if(user == null){
             return "no user with id: "+id;

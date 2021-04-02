@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/api/business")
+@CrossOrigin(origins = "*")
 public class BusinessController {
 
     private final BusinessService businessService;
