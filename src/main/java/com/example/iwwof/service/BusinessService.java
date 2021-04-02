@@ -47,7 +47,7 @@ public class BusinessService {
 
     public String saveBusiness(Business business){
 
-        User user = userRepository.findByUsername(business.getUser().getUsername()).orElse(null);
+        User user = userRepository.findById(business.getUser().getId()).orElse(null);
 
         if(user == null){
             return "user id not exist";
