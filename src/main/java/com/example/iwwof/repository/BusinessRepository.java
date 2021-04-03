@@ -17,4 +17,7 @@ public interface BusinessRepository extends JpaRepository<Business, Long> {
 
     @Query("select business from Business business where business.location LIKE CONCAT('%',:location,'%')")
     List<Business> findBusinessesByLocation(@Param("location") String location);
+
+    @Query("select business from Business business where business.user.id = :userId")
+    List<Business> findBusinessesByUserId(@Param("userId") Long userId);
 }

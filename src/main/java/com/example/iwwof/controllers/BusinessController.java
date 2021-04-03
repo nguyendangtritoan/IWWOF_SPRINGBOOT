@@ -31,6 +31,12 @@ public class BusinessController {
         return businessService.getBusinessesByCategory(category);
     }
 
+    @GetMapping("/get/userId/{id}")
+    @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+    public List<Business> getBusinessesByUserId(@PathVariable Long id){
+        return businessService.getBusinessesByUserId(id);
+    }
+
     @GetMapping("/get/location/{location}")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
     public List<Business> getBusinessesByLocation(@PathVariable String location){

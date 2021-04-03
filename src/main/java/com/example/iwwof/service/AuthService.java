@@ -69,10 +69,16 @@ public class AuthService {
                 .map(GrantedAuthority::getAuthority)
                 .collect(Collectors.toList());
 
-        return ResponseEntity.ok(new JwtResponse(jwt,
+        return ResponseEntity.ok(
+                new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
                 userDetails.getEmail(),
+                user.getName(),
+                user.getLocation(),
+                user.getPhoneNumber(),
+                user.getWebsite(),
+                user.getOtherContactInfo(),
                 roles));
     }
 

@@ -31,6 +31,10 @@ public class BusinessService {
         return businessRepository.findBusinessesByLocation(location);
     }
 
+    public List<Business> getBusinessesByUserId(Long id){
+        return businessRepository.findBusinessesByUserId(id);
+    }
+
     public String deleteBusinessById(Long id){
 
         Business business = businessRepository.findById(id).orElse(null);
