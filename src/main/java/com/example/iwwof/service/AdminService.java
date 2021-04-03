@@ -37,10 +37,15 @@ public class AdminService {
     }
 
     public String deleteUser(Long id){
+        System.out.println("Id: "+id);
+        if(id == null){
+            return "id is null";
+        }
         User user = userRepository.findById(id).orElse(null);
         if(user == null){
             return "no user with id: "+id;
         }
+        System.out.println("User email: "+user.getEmail());
         userRepository.deleteById(id);
         return "success";
     }

@@ -68,7 +68,7 @@ public class User {
 
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private Set<Business> businesses = new HashSet<>();
 
 	public User() {

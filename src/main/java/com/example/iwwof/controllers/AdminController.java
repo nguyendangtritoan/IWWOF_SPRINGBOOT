@@ -30,8 +30,8 @@ public class AdminController {
 
     @DeleteMapping("/delete/user")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    public String deleteUser(@RequestBody User user){
-        return adminService.deleteUser(user.getId());
+    public String deleteUser(@RequestBody Long id){
+        return adminService.deleteUser(id);
     }
 
     @GetMapping("/get/pending/user")
