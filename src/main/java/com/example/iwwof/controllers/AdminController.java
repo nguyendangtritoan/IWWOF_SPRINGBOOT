@@ -47,7 +47,6 @@ public class AdminController {
     }
 
     @PutMapping("/update/user")
-    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public User updateUser(@RequestBody User user){
         return adminService.updateUser(user);
     }
