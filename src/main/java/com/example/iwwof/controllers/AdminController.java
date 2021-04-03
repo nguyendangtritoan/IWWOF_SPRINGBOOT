@@ -41,12 +41,13 @@ public class AdminController {
     }
 
     @GetMapping("/get/all/user")
-    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')")
     public List<User> getAllUsers(){
         return adminService.getAllUsers();
     }
 
     @PutMapping("/update/user")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')")
     public User updateUser(@RequestBody User user){
         return adminService.updateUser(user);
     }
