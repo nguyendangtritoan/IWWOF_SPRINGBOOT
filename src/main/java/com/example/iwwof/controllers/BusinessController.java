@@ -49,10 +49,10 @@ public class BusinessController {
         return businessService.saveBusiness(business);
     }
 
-    @DeleteMapping("/delete/{id}")
+    @DeleteMapping("/delete")
     @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-    public String removeBusiness(@RequestBody Business business){
-        return businessService.deleteBusinessById(business.getId());
+    public String removeBusiness(@RequestBody Long id){
+        return businessService.deleteBusinessById(id);
     }
 
     @PutMapping("/update")
