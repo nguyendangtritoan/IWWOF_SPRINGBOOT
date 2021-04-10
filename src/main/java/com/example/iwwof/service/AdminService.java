@@ -1,10 +1,14 @@
 package com.example.iwwof.service;
 
 import com.example.iwwof.models.User;
+import com.example.iwwof.payload.request.LoginRequest;
 import com.example.iwwof.repository.BusinessRepository;
 import com.example.iwwof.repository.RoleRepository;
 import com.example.iwwof.repository.UserRepository;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 import java.util.Optional;
@@ -12,14 +16,18 @@ import java.util.Optional;
 @Service
 public class AdminService {
 
+    private final AuthService authService;
     private final BusinessRepository businessRepository;
     private final UserRepository userRepository;
     private final RoleRepository roleRepository;
+    private final PasswordEncoder encoder;
 
-    public AdminService(BusinessRepository businessRepository, UserRepository userRepository, RoleRepository roleRepository) {
+    public AdminService(AuthService authService,BusinessRepository businessRepository, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder) {
+        this.authService = authService;
         this.businessRepository = businessRepository;
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
+        this.encoder = encoder;
     }
 
     public String letUserRegister(Long id){
@@ -63,6 +71,28 @@ public class AdminService {
         user.setWebsite(userUpdated.getWebsite());
 
         return userRepository.save(user);
+
+    }
+
+    public String updatePassword(String username, String newpassword,String oldPassword){
+        User user = userRepository.findByUsername(username).orElse(null);
+        if(user == null){
+            return "can't find user with username";
+        }
+
+        LoginRequest loginRequest = new LoginRequest();
+        loginRequest.setUsername(username);
+        loginRequest.setPassword(oldPassword);
+
+        ResponseEntity<?> responseEntity = authService.authenticateUser(loginRequest);
+        if(responseEntity.getStatusCode().is2xxSuccessful()) {
+            String encodePass = encoder.encode(newpassword);
+            user.setPassword(encodePass);
+            userRepository.save(user);
+        }else {
+            return "Wrong password";
+        }
+        return "Updated succesfully";
 
     }
 

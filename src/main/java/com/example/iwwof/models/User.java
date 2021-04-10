@@ -1,6 +1,7 @@
 package com.example.iwwof.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.util.Collection;
@@ -34,6 +35,8 @@ public class User {
 	@Email
 	private String email;
 
+
+	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@NotBlank
 	@Size(max = 120)
 	private String password;

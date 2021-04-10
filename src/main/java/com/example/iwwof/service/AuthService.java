@@ -11,6 +11,8 @@ import com.example.iwwof.repository.RoleRepository;
 import com.example.iwwof.repository.UserRepository;
 import com.example.iwwof.security.jwt.JwtUtils;
 import com.example.iwwof.security.services.UserDetailsImpl;
+import com.example.iwwof.security.util.DefaultPasswordGenerator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,31 +22,31 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 @Service
 public class AuthService {
 
-    private final AuthenticationManager authenticationManager;
+    @Autowired
+    private  AuthenticationManager authenticationManager;
 
-    private final UserRepository userRepository;
+    @Autowired
+    private UserRepository userRepository;
 
-    private final RoleRepository roleRepository;
+    @Autowired
+    private RoleRepository roleRepository;
 
-    private final PasswordEncoder encoder;
+    @Autowired
+    private PasswordEncoder encoder;
 
-    private final JwtUtils jwtUtils;
+    @Autowired
+    private JwtUtils jwtUtils;
 
-    public AuthService(AuthenticationManager authenticationManager, UserRepository userRepository, RoleRepository roleRepository, PasswordEncoder encoder, JwtUtils jwtUtils) {
-        this.authenticationManager = authenticationManager;
-        this.userRepository = userRepository;
-        this.roleRepository = roleRepository;
-        this.encoder = encoder;
-        this.jwtUtils = jwtUtils;
-    }
+    @Autowired
+    private MailService mailService;
 
     public ResponseEntity<?> authenticateUser(LoginRequest loginRequest){
         User user = userRepository.findByUsername(loginRequest.getUsername()).orElse(null);
@@ -134,5 +136,21 @@ public class AuthService {
         userRepository.save(user);
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+    public String forgotPasswordHandler(String username, String email){
+        Optional<User> user = userRepository.findByUsername(username);
+        if(!user.isPresent())
+            return "Username not found";
+        else if(!user.get().getEmail().equals(email)){
+            return "No user register with this email";
+        }
+        else {
+            String newPassword = DefaultPasswordGenerator.generate(10);
+            user.get().setPassword(encoder.encode(newPassword));
+            userRepository.save(user.get());
+            String body = "Your password at IWWOF page has been reset to "+newPassword+", please use this to update your own password.";
+            return mailService.sendMail("IWWOF", "RESET IWWOF PASSWORD", email,body);
+        }
     }
 }
