@@ -80,12 +80,13 @@ public class AdminService {
             return "can't find user with username";
         }
 
-        LoginRequest loginRequest = new LoginRequest();
-        loginRequest.setUsername(username);
-        loginRequest.setPassword(oldPassword);
-
-        ResponseEntity<?> responseEntity = authService.authenticateUser(loginRequest);
-        if(responseEntity.getStatusCode().is2xxSuccessful()) {
+//        LoginRequest loginRequest = new LoginRequest();
+//        loginRequest.setUsername(username);
+//        loginRequest.setPassword(oldPassword);
+//
+//        ResponseEntity<?> responseEntity = authService.authenticateUser(loginRequest);
+        Boolean isCorrectPassword = encoder.matches(oldPassword, user.getPassword());
+        if(isCorrectPassword) {
             String encodePass = encoder.encode(newpassword);
             user.setPassword(encodePass);
             userRepository.save(user);

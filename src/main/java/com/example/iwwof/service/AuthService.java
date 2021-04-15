@@ -139,16 +139,16 @@ public class AuthService {
     }
 
     public String forgotPasswordHandler(String username, String email){
-        Optional<User> user = userRepository.findByUsername(username);
-        if(!user.isPresent())
+        Optional<User> userOpt = userRepository.findByUsername(username);
+        if(!userOpt.isPresent())
             return "Username not found";
-        else if(!user.get().getEmail().equals(email)){
+        else if(!userOpt.get().getEmail().equals(email)){
             return "No user register with this email";
         }
         else {
             String newPassword = DefaultPasswordGenerator.generate(10);
-            user.get().setPassword(encoder.encode(newPassword));
-            userRepository.save(user.get());
+            userOpt.get().setPassword(encoder.encode(newPassword));
+            userRepository.save(userOpt.get());
             String body = "Your password at IWWOF page has been reset to "+newPassword+", please use this to update your own password.";
             return mailService.sendMail("IWWOF", "RESET IWWOF PASSWORD", email,body);
         }
