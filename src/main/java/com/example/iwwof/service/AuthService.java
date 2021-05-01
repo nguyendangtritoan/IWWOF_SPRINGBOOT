@@ -75,7 +75,6 @@ public class AuthService {
                 new JwtResponse(jwt,
                 userDetails.getId(),
                 userDetails.getUsername(),
-                userDetails.getEmail(),
                 user.getName(),
                 user.getLocation(),
                 user.getPhoneNumber(),
@@ -91,15 +90,8 @@ public class AuthService {
                     .body(new MessageResponse("Error: Username is already taken!"));
         }
 
-        if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
-        }
-
         // Create new user's account
         User user = new User(signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
                 encoder.encode(signUpRequest.getPassword()));
 
         Set<String> strRoles = signUpRequest.getRole();
@@ -138,19 +130,17 @@ public class AuthService {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-    public String forgotPasswordHandler(String username, String email){
+    public String forgotPasswordHandler(String username){
         Optional<User> userOpt = userRepository.findByUsername(username);
         if(!userOpt.isPresent())
             return "Username not found";
-        else if(!userOpt.get().getEmail().equals(email)){
-            return "No user register with this email";
-        }
+
         else {
             String newPassword = DefaultPasswordGenerator.generate(10);
             userOpt.get().setPassword(encoder.encode(newPassword));
             userRepository.save(userOpt.get());
             String body = "Your password at IWWOF page has been reset to "+newPassword+", please use this to update your own password.";
-            return mailService.sendMail("IWWOF", "RESET IWWOF PASSWORD", email,body);
+            return mailService.sendMail("IWWOF", "RESET IWWOF PASSWORD", username,body);
         }
     }
 }
