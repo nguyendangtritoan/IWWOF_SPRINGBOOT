@@ -53,6 +53,7 @@ public class AdminService {
         if(user == null){
             return "no user with id: "+id;
         }
+        System.out.println("User email: "+user.getEmail());
         userRepository.deleteById(id);
         return "success";
     }
@@ -62,6 +63,7 @@ public class AdminService {
         if(user == null){
             return null;
         }
+        user.setEmail(userUpdated.getEmail());
         user.setLocation(userUpdated.getLocation());
         user.setName(userUpdated.getName());
         user.setOtherContactInfo(userUpdated.getOtherContactInfo());
@@ -72,12 +74,17 @@ public class AdminService {
 
     }
 
-    public String userUpdatePassword(String username, String newpassword,String oldPassword){
+    public String updatePassword(String username, String newpassword,String oldPassword){
         User user = userRepository.findByUsername(username).orElse(null);
         if(user == null){
             return "can't find user with username";
         }
 
+//        LoginRequest loginRequest = new LoginRequest();
+//        loginRequest.setUsername(username);
+//        loginRequest.setPassword(oldPassword);
+//
+//        ResponseEntity<?> responseEntity = authService.authenticateUser(loginRequest);
         Boolean isCorrectPassword = encoder.matches(oldPassword, user.getPassword());
         if(isCorrectPassword) {
             String encodePass = encoder.encode(newpassword);
@@ -86,21 +93,7 @@ public class AdminService {
         }else {
             return "Wrong password";
         }
-        return "Updated successfully";
-
-    }
-
-    public String adminUpdatePassword(String username, String newpassword){
-        User user = userRepository.findByUsername(username).orElse(null);
-        if(user == null) {
-            return "can't find user with username";
-        }
-
-        String encodePass = encoder.encode(newpassword);
-        user.setPassword(encodePass);
-        userRepository.save(user);
-
-        return "Updated successfully";
+        return "Updated succesfully";
 
     }
 
