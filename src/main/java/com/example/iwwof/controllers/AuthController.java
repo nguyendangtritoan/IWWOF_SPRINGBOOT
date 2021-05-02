@@ -32,7 +32,7 @@ public class AuthController {
 	}
 
 	@PostMapping("/forgotpassword")
-	public String forgotPasswordHandler(@RequestParam String username){
-		return authService.forgotPasswordHandler(username);
+	public String forgotPasswordHandler(@RequestParam String username, @RequestParam String email){
+		return authService.forgotPasswordHandler(username, email);
 	}
 }

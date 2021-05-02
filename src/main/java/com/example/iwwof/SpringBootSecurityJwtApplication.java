@@ -40,9 +40,10 @@ public class SpringBootSecurityJwtApplication {
 				System.out.println("Create user");
 			}
 
-			Boolean adminExist = userRepository.existsByUsername("admin@gmail.com");
+			Boolean adminExist = userRepository.existsByEmail("admin@gmail.com");
 			if (!adminExist) {
 				User user = new User();
+				user.setEmail("admin@gmail.com");
 				user.setRoles(Collections.singletonList(adminRole));
 				user.setAllowByAdmin(true);
 				user.setName("admin");
@@ -50,7 +51,7 @@ public class SpringBootSecurityJwtApplication {
 				user.setPhoneNumber("0123456789");
 				user.setLocation("Finland");
 				user.setWebsite("http://iwwof.com/");
-				user.setUsername("admin@gmail.com");
+				user.setUsername("admin");
 				userRepository.save(user);
 				System.out.println("Creat admin user");
 			}

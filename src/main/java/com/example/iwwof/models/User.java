@@ -17,6 +17,7 @@ import javax.validation.constraints.Size;
 @Table(	name = "users", 
 		uniqueConstraints = { 
 			@UniqueConstraint(columnNames = "username"),
+			@UniqueConstraint(columnNames = "email") 
 		})
 @Setter
 @Getter
@@ -27,8 +28,13 @@ public class User {
 
 	@NotBlank
 	@Size(max = 20)
-	@Email
 	private String username;
+
+	@NotBlank
+	@Size(max = 50)
+	@Email
+	private String email;
+
 
 	@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
 	@NotBlank
@@ -71,16 +77,18 @@ public class User {
 	public User() {
 	}
 
-	public User(String username, String password) {
+	public User(String username, String email, String password) {
 		this.username = username;
+		this.email = email;
 		this.password = password;
 	}
 
-	public User(@NotBlank @Size(max = 50) @Email String username,
+	public User(@NotBlank @Size(max = 20) String username, @NotBlank @Size(max = 50) @Email String email,
 				@NotBlank @Size(max = 120) String password, @NotBlank @Size(max = 120) String name,
 				@NotBlank @Size(max = 120) String location, @NotBlank @Size(max = 120) String phoneNumber,
 				@NotBlank @Size(max = 120) String website, @NotBlank @Size(max = 120) String otherContactInfo, boolean isAllowByAdmin) {
 		this.username = username;
+		this.email = email;
 		this.password = password;
 		this.name = name;
 		this.location = location;

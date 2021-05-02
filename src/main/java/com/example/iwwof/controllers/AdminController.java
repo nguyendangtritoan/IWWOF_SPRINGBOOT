@@ -52,19 +52,13 @@ public class AdminController {
         return adminService.updateUser(user);
     }
 
-    @PutMapping("/userUpdatePassword")
+    @PutMapping("/update/password")
     @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN') or hasRole('USER')")
     public String updatePassword(@RequestParam("username") String username,
                                @RequestParam("newpassword") String newpassword,
                                @RequestParam("oldpassword") String oldPassword){
-        return adminService.userUpdatePassword(username, newpassword, oldPassword);
-    }
-
-    @PutMapping("/adminUpdatePassword")
-    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
-    public String adminUpdateUserPassword(@RequestParam("username") String username,
-                                 @RequestParam("newpassword") String newpassword){
-        return adminService.adminUpdatePassword(username, newpassword);
+        System.out.println(oldPassword);
+        return adminService.updatePassword(username, newpassword, oldPassword);
     }
 
 
