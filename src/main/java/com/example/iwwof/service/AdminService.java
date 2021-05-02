@@ -97,6 +97,20 @@ public class AdminService {
 
     }
 
+    public String adminUpdatePassword(String username, String newpassword){
+        User user = userRepository.findByUsername(username).orElse(null);
+        if(user == null) {
+            return "can't find user with username";
+        }
+
+        String encodePass = encoder.encode(newpassword);
+        user.setPassword(encodePass);
+        userRepository.save(user);
+
+        return "Updated successfully";
+
+    }
+
     public List<User> getPendingToAcceptUsers(){
         return userRepository.findByAccess();
     }
