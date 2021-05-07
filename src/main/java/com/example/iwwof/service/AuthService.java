@@ -138,8 +138,8 @@ public class AuthService {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-    public String forgotPasswordHandler(String username, String email){
-        Optional<User> userOpt = userRepository.findByUsername(username);
+    public String forgotPasswordHandler(String email){
+        Optional<User> userOpt = userRepository.findByEmail(email);
         if(!userOpt.isPresent())
             return "Username not found";
         else if(!userOpt.get().getEmail().equals(email)){

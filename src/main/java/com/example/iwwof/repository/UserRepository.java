@@ -12,6 +12,8 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
 	Optional<User> findByUsername(String username);
 
+	Optional<User> findByEmail(String email);
+
 	@Query(value = "select u from User u where u.isAllowByAdmin = false ")
 	List<User> findByAccess();
 
