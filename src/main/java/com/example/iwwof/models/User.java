@@ -61,6 +61,8 @@ public class User {
 	@Size(max = 120)
 	private String otherContactInfo;
 
+	private String image;
+
 	private boolean isAllowByAdmin;
 
 	@ManyToMany(fetch = FetchType.LAZY)

@@ -18,6 +18,8 @@ public class Business {
     @ManyToOne
     private User user;
 
+    private String image;
+
     private String brandName;
 
     private String description;

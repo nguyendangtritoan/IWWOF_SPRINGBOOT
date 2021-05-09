@@ -1,19 +1,38 @@
 package com.example.iwwof;
 
+import com.example.iwwof.configuration.DatabaseConfiguration;
 import com.example.iwwof.models.ERole;
 import com.example.iwwof.models.Role;
 import com.example.iwwof.models.User;
 import com.example.iwwof.repository.RoleRepository;
 import com.example.iwwof.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 
+import javax.sql.DataSource;
 import java.util.*;
 
 @SpringBootApplication
+@EnableConfigurationProperties(DatabaseConfiguration.class)
 public class SpringBootSecurityJwtApplication {
+
+	@Autowired
+	DatabaseConfiguration databaseConfiguration;
+
+	@Bean
+	public DataSource getDataSource() {
+		DataSourceBuilder dataSourceBuilder = DataSourceBuilder.create();
+		dataSourceBuilder.driverClassName("com.mysql.cj.jdbc.Driver");
+		dataSourceBuilder.url(databaseConfiguration.getDbPropData("url"));
+		dataSourceBuilder.username(databaseConfiguration.getDbPropData("username"));
+		dataSourceBuilder.password(databaseConfiguration.getDbPropData("password"));
+		return dataSourceBuilder.build();
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(SpringBootSecurityJwtApplication.class, args);
@@ -43,7 +62,7 @@ public class SpringBootSecurityJwtApplication {
 			Boolean adminExist = userRepository.existsByEmail("admin@gmail.com");
 			if (!adminExist) {
 				User user = new User();
-				user.setEmail("admin@gmail.com");
+				user.setEmail("iwwofcontact@gmail.com");
 				user.setRoles(Collections.singletonList(adminRole));
 				user.setAllowByAdmin(true);
 				user.setName("admin");
